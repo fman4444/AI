@@ -136,7 +136,27 @@
           return '<li>' + badge('확인 필요') + '<span>' + esc(f.id) + ' · ' + esc(f.dept) + ' — ' + esc(f.reason) + '</span></li>';
         }).join('') + '</ul>';
 
+    renderChart(r);
     renderPeople(r);
+  }
+
+  /* 요약 막대그래프 — 직접 그린 SVG(외부 라이브러리 없음). 50% 기준선은 점선 */
+  function renderChart(r) {
+    var html = '';
+    r.depts.forEach(function (d) {
+      html += '<div class="chart-row"><span class="name">' + esc(d.dept) + '</span>';
+      if (d.targets === 0) {
+        html += '<span class="none">평가대상자 없음</span><span class="pct">-</span><span>' + badge('평가대상자 없음').replace('평가대상자 없음', '판정 없음') + '</span></div>';
+        return;
+      }
+      var w = Math.max(0, Math.min(100, d.achieved / d.targets * 100));
+      html += '<svg viewBox="0 0 100 22" preserveAspectRatio="none" role="img" aria-label="' + esc(d.dept) + ' 달성 비율 ' + pct(d.achieved, d.targets) + '">' +
+        '<rect x="0" y="3" width="100" height="16" rx="3" fill="#EEF0F3"/>' +
+        '<rect x="0" y="3" width="' + w.toFixed(2) + '" height="16" rx="3" fill="#2F5BC1"/>' +
+        '<line x1="50" y1="0" x2="50" y2="22" stroke="#1A1F2B" stroke-width="2" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>' +
+        '</svg><span class="pct">' + pct(d.achieved, d.targets) + '</span><span>' + badge(d.result) + '</span></div>';
+    });
+    $('chart').innerHTML = html;
   }
 
   /* 걸러 보기: 보는 방법만 바꾼다(저장 자료·부서별 판정은 그대로) */

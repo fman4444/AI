@@ -14,6 +14,14 @@
   .empty { color: var(--muted); margin: var(--s1) 0; }
   td .confirm { display: block; margin-top: 2px; }
   .filters { margin-bottom: var(--s2); }
+  .chart { display: grid; gap: var(--s2); margin-bottom: 4px; }
+  .chart-row { display: grid; grid-template-columns: 80px 1fr 64px 76px; align-items: center; gap: var(--s2); }
+  .chart-row .name { font-weight: 700; }
+  .chart-row .pct { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .chart-row svg { width: 100%; height: 22px; display: block; }
+  .chart-row .none { color: var(--muted); font-size: var(--fs-small); }
+  .chart-legend { margin: var(--s1) 0 var(--s3); }
+  @media (max-width: 640px) { .chart-row { grid-template-columns: 64px 1fr 52px 64px; gap: 6px; } }
   .filters .check { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; }
   .filters .check input { width: 20px; height: 20px; min-height: 0; }
   @media (max-width: 640px) {
@@ -52,6 +60,8 @@
 
     <div class="card">
       <h2><span class="accent">부서별</span> 충족 여부</h2>
+      <div class="chart" id="chart" aria-label="부서별 달성 비율 막대그래프"></div>
+      <p class="confirm chart-legend">막대 = 평가대상자 중 개인 달성 비율 · 점선 = 50% 기준선</p>
       <div class="table-wrap"><table id="deptTable"></table></div>
     </div>
 
