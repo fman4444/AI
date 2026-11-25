@@ -33,7 +33,7 @@
     sel.innerHTML = '';
     var first = document.createElement('option');
     first.value = '';
-    first.textContent = '사번을 고르세요';
+    first.textContent = '사번을 선택하십시오';
     sel.appendChild(first);
     data.members.forEach(function (m) {
       if (!m || typeof m.id !== 'string') { return; }
@@ -48,12 +48,12 @@
 
   /* 입력을 확인해 틀린 칸이 있으면 안내 문장을, 맞으면 null을 돌려준다. */
   function validate(id, type, hoursText) {
-    if (!id) { return '사번을 골라 주세요.'; }
-    if (TYPES.indexOf(type) < 0) { return '부재 유형을 골라 주세요.'; }
-    if (hoursText.trim() === '') { return '부재 시간을 넣어 주세요. (0~8 사이 숫자)'; }
+    if (!id) { return '사번을 선택하십시오.'; }
+    if (TYPES.indexOf(type) < 0) { return '부재 유형을 선택하십시오.'; }
+    if (hoursText.trim() === '') { return '부재 시간을 입력하십시오. (0~8 사이 숫자)'; }
     var h = Number(hoursText);
-    if (!isFinite(h) || h < 0 || h > 8) { return '부재 시간은 0~8 사이 숫자로 넣어 주세요.'; }
-    if (type === '없음' && h !== 0) { return "부재 유형이 '없음'이면 부재 시간은 0이어야 해요."; }
+    if (!isFinite(h) || h < 0 || h > 8) { return '부재 시간은 0~8 사이 숫자로 입력하십시오.'; }
+    if (type === '없음' && h !== 0) { return "부재 유형이 '없음'이면 부재 시간은 0이어야 합니다."; }
     return null;
   }
 
@@ -65,7 +65,7 @@
 
     var problem = validate(id, type, hoursText);
     if (problem) {
-      showResult(problem + ' 저장하지 않았어요.', 'error');
+      showResult(problem + ' 저장되지 않았습니다.', 'error');
       return;
     }
 
@@ -79,10 +79,10 @@
     if (updated) { data.attendance[found] = record; } else { data.attendance.push(record); }
 
     if (!saveData(data)) {
-      showResult('이 브라우저에서는 저장할 수 없어요.', 'error');
+      showResult('이 브라우저에서는 저장할 수 없습니다.', 'error');
       return;
     }
-    showResult((updated ? '기존 입력을 고쳤어요: ' : '저장했어요: ') + id + ' · ' + type + ' ' + record.absentHours + '시간', 'ok');
+    showResult((updated ? '기존 입력이 수정되었습니다: ' : '저장되었습니다: ') + id + ' · ' + type + ' ' + record.absentHours + '시간', 'ok');
     render();
   }
 
