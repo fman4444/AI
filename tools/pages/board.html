@@ -13,6 +13,12 @@
   .notice li:last-child { border-bottom: 0; }
   .empty { color: var(--muted); margin: var(--s1) 0; }
   td .confirm { display: block; margin-top: 2px; }
+  @media (max-width: 640px) {
+    table { font-size: 15px; }
+    th, td { padding: 10px 4px; }
+    th, td:last-child { white-space: normal; }
+    td:last-child .badge { white-space: normal; }
+  }
 </style>
 </head>
 <body>
