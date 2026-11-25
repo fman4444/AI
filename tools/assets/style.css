@@ -1,76 +1,132 @@
-/* 공통 디자인 — ① 통합·화면만 고친다. 페이지에만 쓰는 스타일은 그 페이지 html의 <style>에 둔다. */
+/* 공통 디자인 — ① 통합·화면만 고친다. 페이지에만 쓰는 스타일은 그 페이지 html의 <style>에 둔다.
+   기준: docs/design.md 5절 (레퍼런스 LH 홈페이지 캡처 — 색·구조만 참고, 로고·이미지·코드는 가져오지 않음) */
 :root {
-  --bg: #f5f7f6;
-  --card: #ffffff;
-  --text: #1c2421;
-  --muted: #5b6862;
-  --line: #d9e0dc;
-  --accent: #1f6f54;
-  --accent-text: #ffffff;
-  --ok: #1a7f4b;
-  --ok-bg: #e2f3ea;
-  --bad: #b3261e;
-  --bad-bg: #fbe9e7;
-  --warn: #8a5a00;
-  --warn-bg: #fff3d6;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #131816;
-    --card: #1b2220;
-    --text: #e6ece9;
-    --muted: #9aa8a1;
-    --line: #2f3a36;
-    --accent: #6fcfa6;
-    --accent-text: #0d1512;
-    --ok: #6fd49b;
-    --ok-bg: #1b3326;
-    --bad: #ff9a92;
-    --bad-bg: #3a1f1d;
-    --warn: #f2c46b;
-    --warn-bg: #3a2e14;
-  }
+  /* 색 */
+  --primary: #2F5BC1;
+  --primary-dark: #24489A;
+  --primary-soft: #E9EFFB;
+  --bg: #FFFFFF;
+  --section: #F4F7FF;
+  --card-gray: #F4F6F8;
+  --card: #FFFFFF;
+  --line: #E3E7EE;
+  --dash: #D5DAE3;
+  --text: #1A1F2B;
+  --muted: #5B6473;
+  --on-primary: #FFFFFF;
+  /* 상태 꼬리표 4색 */
+  --ok: #17703F;   --ok-bg: #E3F4EA;
+  --bad: #B42318;  --bad-bg: #FDE8E7;
+  --warn: #5F4500; --warn-bg: #FFE6A3;
+  --gray: #4B5563; --gray-bg: #EEF0F3;
+  /* 글자 */
+  --fs-title: 30px; --fs-section: 22px; --fs-card: 20px; --fs-num: 32px; --fs-body: 17px; --fs-small: 15px;
+  /* 간격·모서리 */
+  --s1: 8px; --s2: 12px; --s3: 16px; --s4: 24px; --s5: 32px; --s6: 48px;
+  --r-card: 12px; --r-btn: 10px;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.55 system-ui, "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font: var(--fs-body)/1.6 system-ui, -apple-system, "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
 }
-.wrap { max-width: 900px; margin: 0 auto; padding: 20px 16px 48px; }
-h1 { font-size: 1.35rem; margin: 0 0 4px; }
-h2 { font-size: 1.05rem; margin: 0 0 8px; }
-.sub { color: var(--muted); font-size: .9rem; margin: 0 0 16px; }
-a { color: var(--accent); }
-nav.menu { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: var(--s5) var(--s4) var(--s6); }
+
+/* 제목: 크고 굵게, 앞 낱말만 파랑 */
+.title-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-bottom: var(--s1); }
+h1 { font-size: var(--fs-title); line-height: 1.25; margin: 0; font-weight: 800; letter-spacing: -0.02em; }
+h1 .accent, h2 .accent { color: var(--primary); }
+h2 { font-size: var(--fs-section); line-height: 1.3; margin: 0 0 var(--s3); font-weight: 700; letter-spacing: -0.01em; }
+.sub { color: var(--muted); font-size: var(--fs-small); margin: 0 0 var(--s4); }
+.practice-tag {
+  display: inline-block; padding: 3px 12px; border-radius: 999px;
+  background: var(--primary-soft); color: var(--primary); font-size: 14px; font-weight: 700;
+}
+a { color: var(--primary); }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+/* 메뉴: LH 공지 탭처럼 고른 것에 파란 밑줄 */
+nav.menu { display: flex; flex-wrap: wrap; gap: var(--s4); margin-bottom: var(--s4); border-bottom: 1px solid var(--line); }
 nav.menu a {
-  display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px;
-  background: var(--card); color: var(--text); text-decoration: none;
+  display: inline-block; padding: var(--s2) 2px; color: var(--muted); text-decoration: none;
+  font-size: var(--fs-body); font-weight: 600; border-bottom: 3px solid transparent; margin-bottom: -1px;
 }
-nav.menu a[aria-current="page"] { border-color: var(--accent); font-weight: 600; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
-.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+nav.menu a:hover { color: var(--text); }
+nav.menu a[aria-current="page"] { color: var(--text); border-bottom-color: var(--primary); }
+
+/* 카드 */
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-card);
+  padding: var(--s4); margin-bottom: 20px;
+}
+.card.gray { background: var(--card-gray); border-color: transparent; }
+.section { background: var(--section); border-radius: var(--r-card); padding: var(--s4); margin-bottom: 20px; }
+.row { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+
+/* 버튼: 중요한 버튼 하나만 파랑, 비우기는 빨강 */
 button, .btn {
-  font: inherit; border: 1px solid var(--line); background: var(--card); color: var(--text);
-  border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  font: inherit; font-size: var(--fs-body); font-weight: 600;
+  border: 1px solid var(--dash); background: var(--card); color: var(--text);
+  border-radius: var(--r-btn); padding: 10px 18px; cursor: pointer; min-height: 44px;
+  transition: transform .08s ease, background-color .15s ease;
 }
-button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
-button:disabled { opacity: .5; cursor: not-allowed; }
+button:hover { background: var(--card-gray); }
+button:active { transform: scale(.98); }
+button.primary { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+button.primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
+button.danger { color: var(--bad); border-color: var(--bad); background: var(--card); }
+button.danger:hover { background: var(--bad-bg); }
+button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+
+/* 입력 칸 */
 input, select {
-  font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line);
-  border-radius: 8px; padding: 7px 10px;
+  font: inherit; font-size: var(--fs-body); color: var(--text); background: var(--card);
+  border: 1px solid var(--dash); border-radius: var(--r-btn); padding: 9px 12px; min-height: 44px;
 }
-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+label { font-weight: 600; }
+
+/* 표: LH 공지 목록처럼 줄 사이 점선, 숫자 오른쪽 정렬 */
 .table-wrap { overflow-x: auto; }
-.msg { padding: 8px 12px; border-radius: 8px; margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: var(--s2) var(--s1); border-bottom: 1px dashed var(--dash); white-space: nowrap; }
+th { color: var(--muted); font-size: var(--fs-small); font-weight: 700; border-bottom: 1px solid var(--line); }
+th.num, td.num { text-align: right; }
+
+/* 탭 */
+.tabs { display: flex; gap: var(--s4); border-bottom: 1px solid var(--line); margin-bottom: var(--s3); }
+.tabs button {
+  border: 0; border-radius: 0; background: none; padding: var(--s1) 2px; min-height: 40px;
+  color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px;
+}
+.tabs button:hover { background: none; color: var(--text); }
+.tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--primary); }
+
+/* 안내 문구 */
+.msg { padding: var(--s2) var(--s3); border-radius: var(--r-btn); margin-top: var(--s2); animation: msg-in .25s ease; }
 .msg.ok { background: var(--ok-bg); color: var(--ok); }
 .msg.error { background: var(--bad-bg); color: var(--bad); }
 .msg.warn { background: var(--warn-bg); color: var(--warn); }
-.badge { display: inline-block; border-radius: 999px; padding: 1px 10px; font-weight: 600; font-size: .9rem; }
+@keyframes msg-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* 상태 꼬리표 4색 — 늘 글자와 함께 */
+.badge { display: inline-block; border-radius: 999px; padding: 2px 12px; font-weight: 700; font-size: 14px; white-space: nowrap; background: var(--gray-bg); color: var(--gray); }
 .badge.ok { background: var(--ok-bg); color: var(--ok); }
 .badge.bad { background: var(--bad-bg); color: var(--bad); }
 .badge.warn { background: var(--warn-bg); color: var(--warn); }
-.confirm { color: var(--muted); font-size: .85rem; }
+.badge.gray { background: var(--gray-bg); color: var(--gray); }
+.confirm { color: var(--muted); font-size: 14px; }
+
+@media (max-width: 640px) {
+  :root { --fs-title: 24px; --fs-section: 20px; --fs-num: 26px; }
+  .wrap { padding: var(--s4) var(--s3) var(--s5); }
+  .card, .section { padding: var(--s3); }
+  nav.menu { gap: var(--s3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
 [hidden] { display: none !important; }
