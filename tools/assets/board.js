@@ -97,10 +97,11 @@
     return m === 0 ? '-' : (Math.round(n / m * 1000) / 10) + '%';
   }
 
+  /* 상태 꼬리표 4색: 초록=달성·충족, 빨강=미달성·미충족, 노랑=확인 필요, 회색=미입력·평가 제외 */
   function badge(text) {
     var kind = (text === '충족' || text === '달성') ? 'ok'
-      : (text === '미충족' || text === '미달성' || text === '미입력') ? 'bad'
-      : (text === '확인 필요') ? 'warn' : '';
+      : (text === '미충족' || text === '미달성') ? 'bad'
+      : (text === '확인 필요') ? 'warn' : 'gray';
     return '<span class="badge ' + kind + '">' + esc(text) + '</span>';
   }
 
@@ -114,10 +115,10 @@
     var r = evaluate(data);
     $('targetFriday').textContent = data.targetFriday;
 
-    var h = '<thead><tr><th>부서</th><th>평가대상자</th><th>달성자</th><th>달성 비율</th><th>판정</th></tr></thead><tbody>';
+    var h = '<thead><tr><th>부서</th><th class="num">평가대상자</th><th class="num">달성자</th><th class="num">달성 비율</th><th>판정</th></tr></thead><tbody>';
     r.depts.forEach(function (d) {
       var judged = d.result === '충족' || d.result === '미충족';
-      h += '<tr><td>' + esc(d.dept) + '</td><td>' + d.targets + '명</td><td>' + d.achieved + '명</td><td>' +
+      h += '<tr><td>' + esc(d.dept) + '</td><td class="num">' + d.targets + '명</td><td class="num">' + d.achieved + '명</td><td class="num">' +
         pct(d.achieved, d.targets) + '</td><td>' + badge(d.result) +
         (judged ? '<span class="confirm">' + CONFIRM + '</span>' : '') + '</td></tr>';
     });
@@ -125,25 +126,38 @@
 
     $('missingCount').textContent = '(' + r.missing.length + '명)';
     $('missingList').innerHTML = r.missing.length === 0
-      ? '<p class="empty">미입력자 없음</p>'
-      : '<ul class="list">' + r.missing.map(function (p) { return '<li>' + esc(p.id) + ' · ' + esc(p.dept) + '</li>'; }).join('') + '</ul>';
+      ? '<p class="empty">미입력자가 없습니다.</p>'
+      : '<ul class="notice">' + r.missing.map(function (p) { return '<li>' + badge('미입력') + '<span>' + esc(p.id) + ' · ' + esc(p.dept) + '</span></li>'; }).join('') + '</ul>';
 
     $('flagCount').textContent = '(' + r.flags.length + '건)';
     $('flagList').innerHTML = r.flags.length === 0
-      ? '<p class="empty">없음</p>'
-      : '<ul class="list">' + r.flags.map(function (f) {
-          return '<li>' + badge('확인 필요') + ' ' + esc(f.id) + ' · ' + esc(f.dept) + ' — ' + esc(f.reason) + '</li>';
+      ? '<p class="empty">확인할 건이 없습니다.</p>'
+      : '<ul class="notice">' + r.flags.map(function (f) {
+          return '<li>' + badge('확인 필요') + '<span>' + esc(f.id) + ' · ' + esc(f.dept) + ' — ' + esc(f.reason) + '</span></li>';
         }).join('') + '</ul>';
 
+    renderPeople(r);
+  }
+
+  function renderPeople(r) {
     var t = '<thead><tr><th>사번</th><th>부서</th><th>부재</th><th>결과</th></tr></thead><tbody>';
     r.people.forEach(function (p) {
       var absent = p.record ? esc(p.record.absentType) + ' ' + esc(p.record.absentHours) + '시간' : '-';
-      var judged = p.status === '달성' || p.status === '미달성';
-      t += '<tr><td>' + esc(p.id) + '</td><td>' + esc(p.dept) + '</td><td>' + absent + '</td><td>' + badge(p.status) +
-        (judged ? '<span class="confirm">' + CONFIRM + '</span>' : '') + '</td></tr>';
+      t += '<tr><td>' + esc(p.id) + '</td><td>' + esc(p.dept) + '</td><td>' + absent + '</td><td>' + badge(p.status) + '</td></tr>';
     });
     $('personTable').innerHTML = t + '</tbody>';
   }
+
+  /* 확인 목록 탭 */
+  function selectTab(which) {
+    var m = which === 'missing';
+    $('tabMissing').setAttribute('aria-selected', m ? 'true' : 'false');
+    $('tabFlags').setAttribute('aria-selected', m ? 'false' : 'true');
+    $('missingList').hidden = !m;
+    $('flagList').hidden = m;
+  }
+  $('tabMissing').addEventListener('click', function () { selectTab('missing'); });
+  $('tabFlags').addEventListener('click', function () { selectTab('flags'); });
 
   render();
 })();
