@@ -58,23 +58,23 @@ function exportJson() {
 function importJson(file) {
   return new Promise(function (resolve) {
     if (!file) {
-      resolve({ ok: false, message: '파일을 골라 주세요.' });
+      resolve({ ok: false, message: '파일을 선택하십시오.' });
       return;
     }
     var reader = new FileReader();
     reader.onerror = function () {
-      resolve({ ok: false, message: '파일을 읽지 못했어요. 다시 골라 주세요.' });
+      resolve({ ok: false, message: '파일을 읽지 못했습니다. 다시 선택하십시오.' });
     };
     reader.onload = function () {
       var d;
       try {
         d = JSON.parse(String(reader.result).replace(/^﻿/, ''));
       } catch (e) {
-        resolve({ ok: false, message: '이 웹앱의 백업·표본 파일인지 확인해 주세요. (JSON 형식이 아니에요) 기존 데이터는 그대로예요.' });
+        resolve({ ok: false, message: '이 웹앱의 백업·표본 파일인지 확인하십시오. (JSON 형식이 아닙니다) 기존 자료는 그대로입니다.' });
         return;
       }
       if (!d || !Array.isArray(d.members) || !Array.isArray(d.attendance)) {
-        resolve({ ok: false, message: '이 웹앱의 백업·표본 파일인지 확인해 주세요. (부서원 명단·근태 칸이 없어요) 기존 데이터는 그대로예요.' });
+        resolve({ ok: false, message: '이 웹앱의 백업·표본 파일인지 확인하십시오. (부서원 명단·근태 칸이 없습니다) 기존 자료는 그대로입니다.' });
         return;
       }
       var data = {
@@ -83,10 +83,10 @@ function importJson(file) {
         attendance: d.attendance
       };
       if (!saveData(data)) {
-        resolve({ ok: false, message: '이 브라우저에서는 저장할 수 없어요.' });
+        resolve({ ok: false, message: '이 브라우저에서는 저장할 수 없습니다.' });
         return;
       }
-      resolve({ ok: true, message: '가져왔어요. 부서원 ' + data.members.length + '명, 근태 ' + data.attendance.length + '건' });
+      resolve({ ok: true, message: '가져왔습니다. 부서원 ' + data.members.length + '명, 근태 ' + data.attendance.length + '건' });
     };
     reader.readAsText(file, 'utf-8');
   });

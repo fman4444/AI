@@ -97,10 +97,11 @@
     return m === 0 ? '-' : (Math.round(n / m * 1000) / 10) + '%';
   }
 
+  /* 상태 꼬리표 4색: 초록=달성·충족, 빨강=미달성·미충족, 노랑=확인 필요, 회색=미입력·평가 제외 */
   function badge(text) {
     var kind = (text === '충족' || text === '달성') ? 'ok'
-      : (text === '미충족' || text === '미달성' || text === '미입력') ? 'bad'
-      : (text === '확인 필요') ? 'warn' : '';
+      : (text === '미충족' || text === '미달성') ? 'bad'
+      : (text === '확인 필요') ? 'warn' : 'gray';
     return '<span class="badge ' + kind + '">' + esc(text) + '</span>';
   }
 
@@ -114,10 +115,10 @@
     var r = evaluate(data);
     $('targetFriday').textContent = data.targetFriday;
 
-    var h = '<thead><tr><th>부서</th><th>평가대상자</th><th>달성자</th><th>달성 비율</th><th>판정</th></tr></thead><tbody>';
+    var h = '<thead><tr><th>부서</th><th class="num">평가대상자</th><th class="num">달성자</th><th class="num">달성 비율</th><th>판정</th></tr></thead><tbody>';
     r.depts.forEach(function (d) {
       var judged = d.result === '충족' || d.result === '미충족';
-      h += '<tr><td>' + esc(d.dept) + '</td><td>' + d.targets + '명</td><td>' + d.achieved + '명</td><td>' +
+      h += '<tr><td>' + esc(d.dept) + '</td><td class="num">' + d.targets + '명</td><td class="num">' + d.achieved + '명</td><td class="num">' +
         pct(d.achieved, d.targets) + '</td><td>' + badge(d.result) +
         (judged ? '<span class="confirm">' + CONFIRM + '</span>' : '') + '</td></tr>';
     });
@@ -125,25 +126,91 @@
 
     $('missingCount').textContent = '(' + r.missing.length + '명)';
     $('missingList').innerHTML = r.missing.length === 0
-      ? '<p class="empty">미입력자 없음</p>'
-      : '<ul class="list">' + r.missing.map(function (p) { return '<li>' + esc(p.id) + ' · ' + esc(p.dept) + '</li>'; }).join('') + '</ul>';
+      ? '<p class="empty">미입력자가 없습니다.</p>'
+      : '<ul class="notice">' + r.missing.map(function (p) { return '<li>' + badge('미입력') + '<span>' + esc(p.id) + ' · ' + esc(p.dept) + '</span></li>'; }).join('') + '</ul>';
 
     $('flagCount').textContent = '(' + r.flags.length + '건)';
     $('flagList').innerHTML = r.flags.length === 0
-      ? '<p class="empty">없음</p>'
-      : '<ul class="list">' + r.flags.map(function (f) {
-          return '<li>' + badge('확인 필요') + ' ' + esc(f.id) + ' · ' + esc(f.dept) + ' — ' + esc(f.reason) + '</li>';
+      ? '<p class="empty">확인할 건이 없습니다.</p>'
+      : '<ul class="notice">' + r.flags.map(function (f) {
+          return '<li>' + badge('확인 필요') + '<span>' + esc(f.id) + ' · ' + esc(f.dept) + ' — ' + esc(f.reason) + '</span></li>';
         }).join('') + '</ul>';
 
+    renderChart(r);
+    renderPeople(r);
+  }
+
+  /* 요약 막대그래프 — 직접 그린 SVG(외부 라이브러리 없음). 50% 기준선은 점선 */
+  function renderChart(r) {
+    var html = '';
+    r.depts.forEach(function (d) {
+      html += '<div class="chart-row"><span class="name">' + esc(d.dept) + '</span>';
+      if (d.targets === 0) {
+        html += '<span class="none">평가대상자 없음</span><span class="pct">-</span><span>' + badge('평가대상자 없음').replace('평가대상자 없음', '판정 없음') + '</span></div>';
+        return;
+      }
+      var w = Math.max(0, Math.min(100, d.achieved / d.targets * 100));
+      html += '<svg viewBox="0 0 100 22" preserveAspectRatio="none" role="img" aria-label="' + esc(d.dept) + ' 달성 비율 ' + pct(d.achieved, d.targets) + '">' +
+        '<rect x="0" y="3" width="100" height="16" rx="3" fill="#EEF0F3"/>' +
+        '<rect x="0" y="3" width="' + w.toFixed(2) + '" height="16" rx="3" fill="#2F5BC1"/>' +
+        '<line x1="50" y1="0" x2="50" y2="22" stroke="#1A1F2B" stroke-width="2" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/>' +
+        '</svg><span class="pct">' + pct(d.achieved, d.targets) + '</span><span>' + badge(d.result) + '</span></div>';
+    });
+    $('chart').innerHTML = html;
+  }
+
+  /* 걸러 보기: 보는 방법만 바꾼다(저장 자료·부서별 판정은 그대로) */
+  var TODO = ['미달성', '미입력', '확인 필요'];
+  var lastResult = null;
+
+  function fillDeptFilter(r) {
+    var sel = $('deptFilter');
+    var keep = sel.value;
+    sel.innerHTML = '';
+    var all = document.createElement('option');
+    all.value = ''; all.textContent = '전체';
+    sel.appendChild(all);
+    r.depts.forEach(function (d) {
+      var o = document.createElement('option');
+      o.value = d.dept; o.textContent = d.dept;
+      sel.appendChild(o);
+    });
+    sel.value = keep;
+    if (sel.value !== keep) { sel.value = ''; }
+  }
+
+  function renderPeople(r) {
+    lastResult = r;
+    fillDeptFilter(r);
+    var dept = $('deptFilter').value;
+    var todo = $('todoOnly').checked;
+    var shown = r.people.filter(function (p) {
+      return (dept === '' || p.dept === dept) && (!todo || TODO.indexOf(p.status) >= 0);
+    });
     var t = '<thead><tr><th>사번</th><th>부서</th><th>부재</th><th>결과</th></tr></thead><tbody>';
-    r.people.forEach(function (p) {
+    shown.forEach(function (p) {
       var absent = p.record ? esc(p.record.absentType) + ' ' + esc(p.record.absentHours) + '시간' : '-';
-      var judged = p.status === '달성' || p.status === '미달성';
-      t += '<tr><td>' + esc(p.id) + '</td><td>' + esc(p.dept) + '</td><td>' + absent + '</td><td>' + badge(p.status) +
-        (judged ? '<span class="confirm">' + CONFIRM + '</span>' : '') + '</td></tr>';
+      t += '<tr><td>' + esc(p.id) + '</td><td>' + esc(p.dept) + '</td><td>' + absent + '</td><td>' + badge(p.status) + '</td></tr>';
     });
     $('personTable').innerHTML = t + '</tbody>';
+    $('personTable').hidden = shown.length === 0;
+    $('filterEmpty').hidden = shown.length !== 0;
+    $('filterCount').textContent = (dept !== '' || todo) ? r.people.length + '명 중 ' + shown.length + '명 표시' : '';
   }
+
+  $('deptFilter').addEventListener('change', function () { if (lastResult) { renderPeople(lastResult); } });
+  $('todoOnly').addEventListener('change', function () { if (lastResult) { renderPeople(lastResult); } });
+
+  /* 확인 목록 탭 */
+  function selectTab(which) {
+    var m = which === 'missing';
+    $('tabMissing').setAttribute('aria-selected', m ? 'true' : 'false');
+    $('tabFlags').setAttribute('aria-selected', m ? 'false' : 'true');
+    $('missingList').hidden = !m;
+    $('flagList').hidden = m;
+  }
+  $('tabMissing').addEventListener('click', function () { selectTab('missing'); });
+  $('tabFlags').addEventListener('click', function () { selectTab('flags'); });
 
   render();
 })();
