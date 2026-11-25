@@ -61,6 +61,6 @@
 
 ## 4. 여는 방법
 
-- 배포: GitHub Pages `https://team2g.github.io/team2g/tools/index.html` — 조원이 알려 준 조직·레포 이름(team2g)으로 적었습니다. 실제 저장소는 `LH-AXCamp/w02c03-team2g`라서 Pages 주소가 `https://lh-axcamp.github.io/w02c03-team2g/tools/index.html`일 수 있습니다. {확인 필요: 배포 주소}
+- 배포: GitHub Pages `https://lh-axcamp.github.io/W02C03-team2G/tools/index.html` — 실제 저장소 `LH-AXCamp/W02C03-team2G` 기준(조원 결정). 레포 이름의 대소문자를 그대로 씁니다.
 - 병합 전 확인: 브랜치 **Code → Download ZIP** → 압축을 풀고 `tools/index.html` 더블클릭
 - 파일 검사: `python tests/run_acceptance.py`

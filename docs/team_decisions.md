@@ -18,7 +18,7 @@
 | 4 어떻게 | 결정 | 여러 페이지 HTML 웹앱, GitHub Pages 배포, 서버·로그인·외부 전송 없음. 이번에는 검토 담당자 한 사람이 가상 표본으로 입력부터 검토까지 시연한다. 50명 실제 수합은 다음 단계 | | |
 | 4 어떻게 | 결정 | 기능 A 영문 = `IN`, 기능 B 영문 = `board`, 조 이름·조직 영문명·팀 레포 이름 = `team2g` | | |
 | 4 어떻게 | 가정 | localStorage 키 = `team2g_app`. 기능 A 파일은 대문자 그대로 `tools/pages/IN.html`, `tools/assets/IN.js` | | 뼈대 PR 때 |
-| 4 어떻게 | 가정 | 배포 주소는 알려 준 값대로 `https://team2g.github.io/team2g/tools/index.html`로 적었다. 실제 저장소가 `LH-AXCamp/w02c03-team2g`라서 Pages 주소가 `https://lh-axcamp.github.io/w02c03-team2g/tools/index.html`일 수 있다 {확인 필요: 배포 주소} | | 통합 PR 병합 전 |
+| 4 어떻게 | 결정 | 배포 주소는 실제 저장소 기준 `https://lh-axcamp.github.io/W02C03-team2G/tools/index.html`로 한다(처음 알려 준 team2g.github.io/team2g 대신) | | |
 | 4 어떻게 | 가정 | 표본은 `data/team_sample.json` 하나(저장 JSON과 같은 모양)이고 시작 페이지 '가져오기'로 불러온다 | | ④ 표본 작성 때 |
 | 4 어떻게 | 가정 | 제작 시간은 "오늘 안, 몇 시간 이내"로만 정했다 {확인 필요: 제작 시간} | | |
 | 5 성공 | 결정 | 핵심 지표 2개, 같은 비중: 부서별 충족 여부 판정 · 미입력자 목록. 판정은 "담당 검토 후 확정" — 검증 담당 확인 ☐ | | |
