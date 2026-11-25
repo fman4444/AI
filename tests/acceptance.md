@@ -11,7 +11,7 @@
 
 | 항목 | 내용 |
 |---|---|
-| 시험 대상 | 배포 주소 `docs/design.md` 4절의 Pages 주소 {확인 필요: 배포 주소}(Pages 미사용이면 main ZIP의 `tools/index.html`) |
+| 시험 대상 | 배포 주소 `https://lh-axcamp.github.io/W02C03-team2G/tools/index.html`(Pages 미사용이면 main ZIP의 `tools/index.html`) |
 | 브라우저 | 교육장 PC의 Edge 또는 Chrome |
 | 시작 상태 | 시작 페이지 '비우기'를 누른 뒤 시작 |
 | 표본 | `data/team_sample.json` (부서원 18명·근태 16건, 가상 · 일부러 넣은 함정 1개) |
