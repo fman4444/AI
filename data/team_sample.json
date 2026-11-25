@@ -1,0 +1,41 @@
+{
+  "targetFriday": "2026-11-27",
+  "members": [
+    {"id": "M01", "dept": "가상1부", "trainee": false},
+    {"id": "M02", "dept": "가상1부", "trainee": false},
+    {"id": "M03", "dept": "가상1부", "trainee": false},
+    {"id": "M04", "dept": "가상1부", "trainee": false},
+    {"id": "M05", "dept": "가상1부", "trainee": false},
+    {"id": "M06", "dept": "가상1부", "trainee": true},
+    {"id": "M07", "dept": "가상2부", "trainee": false},
+    {"id": "M08", "dept": "가상2부", "trainee": false},
+    {"id": "M09", "dept": "가상2부", "trainee": false},
+    {"id": "M10", "dept": "가상2부", "trainee": false},
+    {"id": "M11", "dept": "가상2부", "trainee": true},
+    {"id": "M12", "dept": "가상2부", "trainee": true},
+    {"id": "M13", "dept": "가상3부", "trainee": false},
+    {"id": "M14", "dept": "가상3부", "trainee": false},
+    {"id": "M15", "dept": "가상3부", "trainee": false},
+    {"id": "M16", "dept": "가상3부", "trainee": false},
+    {"id": "M17", "dept": "가상3부", "trainee": false},
+    {"id": "M18", "dept": "가상3부", "trainee": false}
+  ],
+  "attendance": [
+    {"id": "M01", "date": "2026-11-27", "absentType": "휴가", "absentHours": 8},
+    {"id": "M02", "date": "2026-11-27", "absentType": "출장", "absentHours": 4},
+    {"id": "M03", "date": "2026-11-27", "absentType": "휴가", "absentHours": 3.5},
+    {"id": "M04", "date": "2026-11-27", "absentType": "없음", "absentHours": 0},
+    {"id": "M06", "date": "2026-11-27", "absentType": "없음", "absentHours": 0},
+    {"id": "M07", "date": "2026-11-27", "absentType": "휴가", "absentHours": 4},
+    {"id": "M08", "date": "2026-11-27", "absentType": "출장", "absentHours": 6},
+    {"id": "M09", "date": "2026-11-27", "absentType": "없음", "absentHours": 0},
+    {"id": "M11", "date": "2026-11-27", "absentType": "휴가", "absentHours": 8},
+    {"id": "M13", "date": "2026-11-27", "absentType": "휴가", "absentHours": 8},
+    {"id": "M14", "date": "2026-11-27", "absentType": "출장", "absentHours": 8},
+    {"id": "M15", "date": "2026-11-27", "absentType": "휴가", "absentHours": 5},
+    {"id": "M16", "date": "2026-11-27", "absentType": "없음", "absentHours": 0},
+    {"id": "M17", "date": "2026-11-27", "absentType": "휴가", "absentHours": 4},
+    {"id": "M17", "date": "2026-11-27", "absentType": "없음", "absentHours": 0},
+    {"id": "M18", "date": "2026-11-27", "absentType": "휴가", "absentHours": 4}
+  ]
+}
