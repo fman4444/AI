@@ -61,6 +61,6 @@
 
 ## 4. 여는 방법
 
-- 배포: GitHub Pages `https://lh-axcamp.github.io/W02C03-team2G/tools/index.html` — 실제 저장소 `LH-AXCamp/W02C03-team2G` 기준(조원 결정). 레포 이름의 대소문자를 그대로 씁니다.
+- 배포: 생략(조 결정). 확인은 main ZIP의 `tools/index.html` 더블클릭으로 한다. Pages를 켜면 주소는 `https://lh-axcamp.github.io/W02C03-team2G/tools/index.html`이 된다.
 - 병합 전 확인: 브랜치 **Code → Download ZIP** → 압축을 풀고 `tools/index.html` 더블클릭
 - 파일 검사: `python tests/run_acceptance.py`
