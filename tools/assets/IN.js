@@ -1,6 +1,6 @@
 /*
  * 기능 A — 근태 입력 페이지(IN). ② 기능 A 담당 파일.
- * 저장소는 common.js의 loadData·saveData로만 쓰고, attendance 칸만 바꾼다(docs/design.md 2절).
+ * 저장소는 common.js의 loadData·saveData로만 쓰고, attendance 칸과 고른 부서원의 trainee(교육대상자) 표시만 바꾼다(docs/design.md 2절).
  */
 (function () {
   'use strict';
@@ -43,7 +43,14 @@
       sel.appendChild(o);
     });
     sel.value = keep;
+    syncTraineeFrom(data);
     $('savedCount').textContent = '이번 금요일 저장된 근태 ' + countForFriday(data) + '건';
+  }
+
+  function syncTraineeFrom(data) {
+    var id = $('memberId').value, t = false;
+    data.members.forEach(function (m) { if (m && m.id === id && m.trainee === true) { t = true; } });
+    $('isTrainee').checked = t;
   }
 
   /* 입력을 확인해 틀린 칸이 있으면 안내 문장을, 맞으면 null을 돌려준다. */
@@ -77,15 +84,21 @@
     }
     var updated = found >= 0;
     if (updated) { data.attendance[found] = record; } else { data.attendance.push(record); }
+    var trainee = $('isTrainee').checked;
+    data.members.forEach(function (m) { if (m && m.id === id) { m.trainee = trainee; } });
 
     if (!saveData(data)) {
       showResult('이 브라우저에서는 저장할 수 없습니다.', 'error');
       return;
     }
-    showResult((updated ? '기존 입력이 수정되었습니다: ' : '저장되었습니다: ') + id + ' · ' + type + ' ' + record.absentHours + '시간', 'ok');
+    showResult((updated ? '기존 입력이 수정되었습니다: ' : '저장되었습니다: ') + id + ' · ' + type + ' ' + record.absentHours + '시간' +
+      (trainee ? ' · 교육대상자(평가 제외)' : ''), 'ok');
     render();
   }
 
+  function syncTrainee() { syncTraineeFrom(loadData()); }
+
+  $('memberId').addEventListener('change', syncTrainee);
   $('saveBtn').addEventListener('click', onSave);
   render();
 })();

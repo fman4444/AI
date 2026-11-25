@@ -13,6 +13,9 @@
   .hint { color: var(--muted); font-size: var(--fs-small); margin: var(--s2) 0 0; }
   .friday { display: inline-block; margin-left: 6px; }
   .count { color: var(--muted); font-size: var(--fs-small); }
+  .check { display: inline-flex; align-items: center; gap: 8px; margin-top: var(--s3); cursor: pointer; }
+  .check input { width: 20px; height: 20px; min-height: 0; }
+  .hint-inline { color: var(--muted); font-weight: 400; font-size: var(--fs-small); }
 </style>
 </head>
 <body>
@@ -52,7 +55,8 @@
           <input id="absentHours" type="number" min="0" max="8" step="0.5" value="0" inputmode="decimal">
         </div>
       </div>
-      <p class="hint">반차는 휴가 4시간으로 입력하십시오. 같은 사번을 다시 저장하면 기존 입력이 수정됩니다.</p>
+      <label class="check" for="isTrainee"><input type="checkbox" id="isTrainee"> 교육대상자 <span class="hint-inline">— 체크하면 평가대상자(모수)에서 제외됩니다</span></label>
+      <p class="hint">반차는 휴가 4시간으로 입력하십시오. 같은 사번을 다시 저장하면 기존 입력이 수정됩니다. 교육대상자는 부재가 없으면 '없음 · 0시간'으로 저장하십시오.</p>
       <div class="row" style="margin-top:var(--s3)">
         <button type="button" class="primary" id="saveBtn">저장</button>
         <span class="count" id="savedCount"></span>

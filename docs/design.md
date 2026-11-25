@@ -25,10 +25,10 @@
 | 칸 이름 | 뜻 | 형식 | 쓰는 페이지 | 읽는 페이지 |
 |---|---|---|---|---|
 | `targetFriday` | 판정 대상 금요일 | 문자열 `"YYYY-MM-DD"` | ① 시작(표본·백업 가져오기) | ② IN, ③ board, ① 시작 |
-| `members` | 부서원 명단 | 배열, 한 건 = `{id, dept, trainee}` — `id` 가상 사번(문자열), `dept` 가상 부서명, `trainee` 교육대상자면 `true` | ① 시작(표본·백업 가져오기) | ② IN(사번 선택 목록), ③ board, ① 시작 |
+| `members` | 부서원 명단 | 배열, 한 건 = `{id, dept, trainee}` — `id` 가상 사번(문자열), `dept` 가상 부서명, `trainee` 교육대상자면 `true` | ① 시작(표본·백업 가져오기), ② IN(고른 부서원의 `trainee`만) | ② IN(사번 선택 목록), ③ board, ① 시작 |
 | `attendance` | 금요일 근태 입력 | 배열, 한 건 = `{id, date, absentType, absentHours}` — `absentType`은 `"없음"`·`"휴가"`·`"출장"` 중 하나, `absentHours`는 0~8 숫자 | ② IN(입력·수정), ① 시작(가져오기) | ③ board, ① 시작(건수) |
 
-- ②는 `loadData()`로 전체를 읽어 `attendance`만 바꾼 뒤 `saveData()`로 통째로 씁니다. 다른 칸은 건드리지 않습니다.
+- ②는 `loadData()`로 전체를 읽어 `attendance`와 고른 부서원의 `trainee`(교육대상자 표시)만 바꾼 뒤 `saveData()`로 통째로 씁니다. 다른 칸은 건드리지 않습니다. 저장 JSON 모양은 바뀌지 않습니다.
 - `IN`에서 같은 사번·같은 날짜를 다시 저장하면 기존 건을 고칩니다(새 건을 더하지 않음). [가정]
 - 예시 1건:
 
