@@ -1,0 +1,76 @@
+/* 공통 디자인 — ① 통합·화면만 고친다. 페이지에만 쓰는 스타일은 그 페이지 html의 <style>에 둔다. */
+:root {
+  --bg: #f5f7f6;
+  --card: #ffffff;
+  --text: #1c2421;
+  --muted: #5b6862;
+  --line: #d9e0dc;
+  --accent: #1f6f54;
+  --accent-text: #ffffff;
+  --ok: #1a7f4b;
+  --ok-bg: #e2f3ea;
+  --bad: #b3261e;
+  --bad-bg: #fbe9e7;
+  --warn: #8a5a00;
+  --warn-bg: #fff3d6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #131816;
+    --card: #1b2220;
+    --text: #e6ece9;
+    --muted: #9aa8a1;
+    --line: #2f3a36;
+    --accent: #6fcfa6;
+    --accent-text: #0d1512;
+    --ok: #6fd49b;
+    --ok-bg: #1b3326;
+    --bad: #ff9a92;
+    --bad-bg: #3a1f1d;
+    --warn: #f2c46b;
+    --warn-bg: #3a2e14;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+}
+.wrap { max-width: 900px; margin: 0 auto; padding: 20px 16px 48px; }
+h1 { font-size: 1.35rem; margin: 0 0 4px; }
+h2 { font-size: 1.05rem; margin: 0 0 8px; }
+.sub { color: var(--muted); font-size: .9rem; margin: 0 0 16px; }
+a { color: var(--accent); }
+nav.menu { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+nav.menu a {
+  display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); color: var(--text); text-decoration: none;
+}
+nav.menu a[aria-current="page"] { border-color: var(--accent); font-weight: 600; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .btn {
+  font: inherit; border: 1px solid var(--line); background: var(--card); color: var(--text);
+  border-radius: 8px; padding: 8px 14px; cursor: pointer;
+}
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+input, select {
+  font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 8px; padding: 7px 10px;
+}
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.table-wrap { overflow-x: auto; }
+.msg { padding: 8px 12px; border-radius: 8px; margin-top: 10px; }
+.msg.ok { background: var(--ok-bg); color: var(--ok); }
+.msg.error { background: var(--bad-bg); color: var(--bad); }
+.msg.warn { background: var(--warn-bg); color: var(--warn); }
+.badge { display: inline-block; border-radius: 999px; padding: 1px 10px; font-weight: 600; font-size: .9rem; }
+.badge.ok { background: var(--ok-bg); color: var(--ok); }
+.badge.bad { background: var(--bad-bg); color: var(--bad); }
+.badge.warn { background: var(--warn-bg); color: var(--warn); }
+.confirm { color: var(--muted); font-size: .85rem; }
+[hidden] { display: none !important; }

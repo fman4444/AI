@@ -29,8 +29,8 @@
 | 역할 | 담당 파일 |
 |---|---|
 | ① 통합·화면 | tools/index.html, tools/assets/common.js, tools/assets/style.css, README.md, docs/demo_script.md |
-| ② 기능 A | tools/pages/{기능A 영문}.html, tools/assets/{기능A 영문}.js |
-| ③ 기능 B | tools/pages/{기능B 영문}.html, tools/assets/{기능B 영문}.js |
+| ② 기능 A | tools/pages/IN.html, tools/assets/IN.js |
+| ③ 기능 B | tools/pages/board.html, tools/assets/board.js |
 | ④ 검증·데이터 | data/team_sample.*, tests/acceptance.md, tests/run_acceptance.py |
 
 ## 웹앱 규칙 (모든 세션에 적용)

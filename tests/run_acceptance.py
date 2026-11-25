@@ -21,12 +21,12 @@ TOOLS = ROOT / "tools"
 
 # ---- ④가 채우는 설정 (docs/design.md와 같게) -------------------------------
 PAGES = [
-    # "tools/index.html",
-    # "tools/pages/{기능A 영문}.html",
-    # "tools/pages/{기능B 영문}.html",
+    "tools/index.html",
+    "tools/pages/IN.html",
+    "tools/pages/board.html",
 ]
 COMMON_FILES = ["tools/assets/common.js", "tools/assets/style.css"]
-STORAGE_KEY = ""  # 예) "team3_app" — design.md 2절
+STORAGE_KEY = "team2g_app"  # design.md 2절
 
 
 # ---- 검사 ------------------------------------------------------------------
