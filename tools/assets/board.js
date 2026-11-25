@@ -139,14 +139,47 @@
     renderPeople(r);
   }
 
+  /* 걸러 보기: 보는 방법만 바꾼다(저장 자료·부서별 판정은 그대로) */
+  var TODO = ['미달성', '미입력', '확인 필요'];
+  var lastResult = null;
+
+  function fillDeptFilter(r) {
+    var sel = $('deptFilter');
+    var keep = sel.value;
+    sel.innerHTML = '';
+    var all = document.createElement('option');
+    all.value = ''; all.textContent = '전체';
+    sel.appendChild(all);
+    r.depts.forEach(function (d) {
+      var o = document.createElement('option');
+      o.value = d.dept; o.textContent = d.dept;
+      sel.appendChild(o);
+    });
+    sel.value = keep;
+    if (sel.value !== keep) { sel.value = ''; }
+  }
+
   function renderPeople(r) {
+    lastResult = r;
+    fillDeptFilter(r);
+    var dept = $('deptFilter').value;
+    var todo = $('todoOnly').checked;
+    var shown = r.people.filter(function (p) {
+      return (dept === '' || p.dept === dept) && (!todo || TODO.indexOf(p.status) >= 0);
+    });
     var t = '<thead><tr><th>사번</th><th>부서</th><th>부재</th><th>결과</th></tr></thead><tbody>';
-    r.people.forEach(function (p) {
+    shown.forEach(function (p) {
       var absent = p.record ? esc(p.record.absentType) + ' ' + esc(p.record.absentHours) + '시간' : '-';
       t += '<tr><td>' + esc(p.id) + '</td><td>' + esc(p.dept) + '</td><td>' + absent + '</td><td>' + badge(p.status) + '</td></tr>';
     });
     $('personTable').innerHTML = t + '</tbody>';
+    $('personTable').hidden = shown.length === 0;
+    $('filterEmpty').hidden = shown.length !== 0;
+    $('filterCount').textContent = (dept !== '' || todo) ? r.people.length + '명 중 ' + shown.length + '명 표시' : '';
   }
+
+  $('deptFilter').addEventListener('change', function () { if (lastResult) { renderPeople(lastResult); } });
+  $('todoOnly').addEventListener('change', function () { if (lastResult) { renderPeople(lastResult); } });
 
   /* 확인 목록 탭 */
   function selectTab(which) {
