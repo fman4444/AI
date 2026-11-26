@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>요약 — 주 4.5일제 근무 현황 점검</title>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  .summary { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  @media (max-width: 900px) { .summary { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 640px) { .summary { grid-template-columns: repeat(2, 1fr); } }
+  .summary > div { background: var(--card); border-radius: var(--r-card); padding: var(--s3) var(--s3); }
+  .summary .label { color: var(--muted); font-size: var(--fs-small); }
+  .summary .value { font-size: var(--fs-num); font-weight: 800; line-height: 1.2; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .summary .value.date { font-size: 22px; }
+  .summary .value { white-space: nowrap; }
+  @media (max-width: 640px) { .summary .value { font-size: 24px; } .summary .value.date { font-size: 18px; } }
+  .empty { color: var(--muted); margin: var(--s2) 0 0; }
+  .empty a { color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="title-row">
+    <h1><span class="accent">요약</span></h1>
+    <span class="practice-tag">LH 실습용 · 가상 자료</span>
+  </div>
+  <p class="sub">저장된 자료의 대상 금요일·부서원·근태 입력·미입력자·확인 필요 수를 한눈에 봅니다. 자세한 판정은 충족 현황에서 봅니다.</p>
+
+  <nav class="menu" aria-label="메뉴">
+    <a href="../index.html">시작</a>
+    <a class="mobile-only" href="summary.html" aria-current="page">요약</a>
+    <a href="IN.html">근태 입력</a>
+    <a href="board.html">충족 현황</a>
+    <a href="admin.html">자료관리(관리자용)</a>
+  </nav>
+
+  <div class="section">
+    <h2><span class="accent">이번 주</span> 요약</h2>
+    <div class="summary">
+      <div><div class="label">대상 금요일</div><div class="value date" id="sumFriday">-</div></div>
+      <div><div class="label">부서원(교육대상자)</div><div class="value" id="sumMembers">0명</div></div>
+      <div><div class="label">이번 금요일 근태 입력</div><div class="value" id="sumAttendance">0건</div></div>
+      <div><div class="label">미입력자</div><div class="value" id="sumMissing">0명</div></div>
+      <div><div class="label">확인 필요</div><div class="value" id="sumFlags">0건</div></div>
+    </div>
+    <p class="empty" id="sumEmpty">아직 자료가 없습니다. <a href="admin.html">자료관리(관리자용)</a> 탭에서 '가져오기'나 '가상 표본 채우기'로 표본을 불러오십시오.</p>
+  </div>
+</div>
+<script src="../assets/common.js"></script>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+
+  /* 미입력자·확인 필요 수 — 충족 현황 페이지(board.js)와 같은 기준으로 센다 */
+  function countChecks(d) {
+    var types = ['없음', '휴가', '출장'];
+    var seen = Object.create(null), list = [];
+    d.members.forEach(function (m) {
+      if (m && typeof m.id === 'string' && m.id !== '' && !seen[m.id]) { seen[m.id] = true; list.push(m); }
+    });
+    var byId = Object.create(null), flags = 0, missing = 0;
+    d.attendance.forEach(function (a) {
+      if (!a || a.date !== d.targetFriday) { return; }
+      if (!seen[a.id]) { flags += 1; return; }            /* 명단에 없는 사번 */
+      (byId[a.id] = byId[a.id] || []).push(a);
+    });
+    list.forEach(function (m) {
+      if (m.trainee === true) { return; }                 /* 교육대상자는 평가 제외 */
+      var recs = byId[m.id] || [];
+      if (recs.length > 1) { flags += 1; return; }         /* 중복 입력 */
+      if (recs.length === 0) { missing += 1; return; }     /* 미입력 */
+      var r = recs[0];
+      var ok = types.indexOf(r.absentType) >= 0 && typeof r.absentHours === 'number' &&
+        isFinite(r.absentHours) && r.absentHours >= 0 && r.absentHours <= 8;
+      if (!ok) { flags += 1; }                             /* 값 오류 */
+    });
+    return { missing: missing, flags: flags };
+  }
+
+  function renderSummary() {
+    var d = loadData();
+    var trainees = d.members.filter(function (m) { return m && m.trainee === true; }).length;
+    var thisFriday = d.attendance.filter(function (a) { return a && a.date === d.targetFriday; }).length;
+    $('sumFriday').textContent = d.targetFriday || '-';
+    $('sumMembers').textContent = d.members.length + '명 (' + trainees + '명)';
+    $('sumAttendance').textContent = thisFriday + '건';
+    var c = countChecks(d);
+    $('sumMissing').textContent = c.missing + '명';
+    $('sumFlags').textContent = c.flags + '건';
+    $('sumEmpty').hidden = d.members.length > 0;
+  }
+
+  renderSummary();
+})();
+</script>
+</body>
+</html>
