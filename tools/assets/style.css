@@ -129,4 +129,7 @@ th.num, td.num { text-align: right; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+/* PC에서는 시작 페이지에 요약을 합쳐 보이고 요약 탭을 감춘다. 휴대폰(640px 이하)은 요약을 따로 탭으로 둔다. */
+@media (min-width: 641px) { .mobile-only { display: none !important; } }
+@media (max-width: 640px) { .pc-only { display: none !important; } }
 [hidden] { display: none !important; }
