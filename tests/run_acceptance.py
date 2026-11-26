@@ -24,6 +24,8 @@ PAGES = [
     "tools/index.html",
     "tools/pages/IN.html",
     "tools/pages/board.html",
+    "tools/pages/summary.html",
+    "tools/pages/admin.html",
 ]
 COMMON_FILES = ["tools/assets/common.js", "tools/assets/style.css"]
 STORAGE_KEY = "team2g_app"  # design.md 2절
