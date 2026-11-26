@@ -28,7 +28,7 @@
 ### 파일 분담 (작업 계획 때 `docs/design.md` 1절과 같게 채운다)
 | 역할 | 담당 파일 |
 |---|---|
-| ① 통합·화면 | tools/index.html, tools/assets/common.js, tools/assets/style.css, README.md, docs/demo_script.md |
+| ① 통합·화면 | tools/index.html, tools/pages/summary.html, tools/pages/admin.html, tools/assets/common.js, tools/assets/style.css, README.md, docs/demo_script.md |
 | ② 기능 A | tools/pages/IN.html, tools/assets/IN.js |
 | ③ 기능 B | tools/pages/board.html, tools/assets/board.js |
 | ④ 검증·데이터 | data/team_sample.*, tests/acceptance.md, tests/run_acceptance.py |
